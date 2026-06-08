@@ -27,7 +27,7 @@ const SearchJob = () => {
             className="border-none outline-none "
           />
         </div>
-        <div className="bg-blue-500 p-3 rounded-xl -mr-3">
+        <div className="bg-blue-500 p-3 rounded-xl -mr-3 cursor-pointer">
           <FaSearch />
         </div>
       </div>
