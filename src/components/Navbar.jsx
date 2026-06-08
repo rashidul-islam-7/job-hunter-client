@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { RiMenu2Fill } from "react-icons/ri";
+import Logo from "./Logo";
 
 const Navbar = () => {
   return (
@@ -26,9 +27,10 @@ const Navbar = () => {
               </li>
             </ul>
           </div>
-          <Link href={"#"} className="text-2xl font-bold text-blue-500">
-            <span className="text-orange-500 underline underline-offset-3">Job</span>Hunter
-          </Link>
+          {/* Logo  */}
+          <div>
+            <Logo />
+          </div>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">

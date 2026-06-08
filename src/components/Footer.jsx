@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FaFacebookF, FaPinterestP, FaLinkedinIn } from "react-icons/fa";
+import Logo from "./Logo";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -12,12 +13,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-14 ">
           {/* Logo & Description */}
           <div className="col-span-2 md:col-span-1">
-            <h2 className="text-2xl font-bold">
-              <span className="text-orange-500 underline underline-offset-3">
-                Job
-              </span>
-              <span className="text-blue-500">Hunter</span>
-            </h2>
+           <Logo />
 
             <p className="mt-8 text-gray-500 leading-6 max-w-xs">
               The AI-native career platform. Built for people who take their
