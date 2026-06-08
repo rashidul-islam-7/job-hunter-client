@@ -26,7 +26,7 @@ const Navbar = () => {
               </li>
             </ul>
           </div>
-          <Link href={"#"} className="text-2xl font-bold text-blue-900">
+          <Link href={"#"} className="text-2xl font-bold text-blue-500">
             <span className="text-orange-500 underline underline-offset-3">Job</span>Hunter
           </Link>
         </div>
