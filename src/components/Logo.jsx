@@ -4,7 +4,10 @@ import React from "react";
 
 const Logo = () => {
   return (
-    <Link href="/" className="text-2xl font-bold text-cyan-700 flex items-center">
+    <Link
+      href="/"
+      className="text-2xl font-bold text-cyan-700 flex items-center"
+    >
       <Image
         src="/JobHunterLogo.png"
         alt="Logo"
