@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Button,
   Description,
@@ -11,16 +13,18 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
-import GoogleSignUpButton from "@/components/GoogleSignUpBtn";
-import Link from "next/link";
-import { signIn } from "@/lib/auth-client";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
-const SignUpPage = () => {
+import GoogleSignUpButton from "@/components/GoogleSignUpBtn";
+import { signIn } from "@/lib/auth-client";
+
+const SignInPage = () => {
+  const router = useRouter();
+
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
 
-  const [isLoading, setIsLoading] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -33,12 +37,16 @@ const SignUpPage = () => {
 
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
-    console.log(user);
 
-    // client side validation
+    // Validation
     if (!user.email?.trim()) {
       setIsLoading(false);
       return setError("Email is required!");
+    }
+
+    if (!user.password?.trim()) {
+      setIsLoading(false);
+      return setError("Password is required!");
     }
 
     if (user.password.length < 8) {
@@ -47,8 +55,6 @@ const SignUpPage = () => {
     }
 
     try {
-      setIsLoading(true);
-
       const { data, error } = await signIn.email({
         email: user.email,
         password: user.password,
@@ -56,17 +62,17 @@ const SignUpPage = () => {
       });
 
       if (error) {
-        setError(error.message);
+        setError(error.message || "Invalid email or password");
         return;
       }
 
-      if (data) {
-        router.push("/");
-      }
+      setSuccess("Sign in successful!");
+      router.push("/");
 
-      setSuccess("Sign in successfully!");
     } catch (err) {
-      setError(err?.message || "Something went wrong!");
+      console.error(err);
+
+      setError(err?.message || "Unable to sign in. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -77,14 +83,15 @@ const SignUpPage = () => {
       <div className="w-full max-w-[550px] rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-white">Sign in you Account</h1>
+          <h1 className="text-3xl font-bold text-white">Sign In</h1>
+
           <p className="mt-2 text-sm text-gray-400">
-            Welcome back your account!
+            Welcome back to your account
           </p>
         </div>
 
-        {/* Google Sign Up */}
-        <GoogleSignUpButton>Sing in with Google</GoogleSignUpButton>
+        {/* Google Login */}
+        <GoogleSignUpButton>Sign in with Google</GoogleSignUpButton>
 
         {/* Divider */}
         <div className="relative my-6">
@@ -93,50 +100,62 @@ const SignUpPage = () => {
           </div>
 
           <div className="relative flex justify-center text-xs uppercase">
-            <span className=" px-3 text-gray-400">Or</span>
+            <span className="px-3 text-gray-400">Or</span>
           </div>
         </div>
+
+        {/* Error */}
+        {error && (
+          <div className="mb-4 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-400">
+            {error}
+          </div>
+        )}
+
+        {/* Success */}
+        {success && (
+          <div className="mb-4 rounded-xl border border-green-500/20 bg-green-500/10 p-3 text-sm text-green-400">
+            {success}
+          </div>
+        )}
 
         {/* Form */}
         <Form onSubmit={onSubmit} className="flex flex-col gap-5">
           <TextField isRequired name="email" type="email">
             <Label>Email</Label>
+
             <Input placeholder="john@example.com" />
+
             <FieldError />
           </TextField>
+
           <TextField
             isRequired
-            minLength={8}
             name="password"
-            type="password"
             validate={(value) => {
               if (value.length < 8) {
                 return "Password must be at least 8 characters";
-              }
-              if (!/[A-Z]/.test(value)) {
-                return "Password must contain at least one uppercase letter";
-              }
-              if (!/[0-9]/.test(value)) {
-                return "Password must contain at least one number";
               }
               return null;
             }}
           >
             <Label>Password</Label>
+
             <InputGroup>
               <InputGroup.Input
-                // className="w-full max-w-[280px]"
+                name="password"
                 type={isVisible ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="e.g Rashed$134"
+                placeholder="Enter your password"
               />
+
               <InputGroup.Suffix className="pr-0">
                 <Button
+                  type="button"
                   isIconOnly
-                  aria-label={isVisible ? "Hide password" : "Show password"}
                   size="sm"
                   variant="ghost"
+                  aria-label={isVisible ? "Hide password" : "Show password"}
                   onPress={() => setIsVisible(!isVisible)}
                 >
                   {isVisible ? (
@@ -147,25 +166,28 @@ const SignUpPage = () => {
                 </Button>
               </InputGroup.Suffix>
             </InputGroup>
-            <Description>At least 8 characters</Description>
+
+            <Description>Minimum 8 characters</Description>
+
             <FieldError />
           </TextField>
 
-          <button
+          <Button
             type="submit"
-            className="cursor-pointer mt-2 h-12 w-full rounded-xl bg-blue-600 font-medium text-white transition-all duration-300 hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/25"
+            isLoading={isLoading}
+            className="mt-2 h-12 w-full bg-blue-600 text-white"
           >
-            Sign in
-          </button>
+            {isLoading ? "Signing in..." : "Sign In"}
+          </Button>
         </Form>
 
         {/* Footer */}
         <div className="mt-6 border-t border-white/10 pt-6 text-center">
           <p className="text-sm text-gray-400">
-            Already have an account?{" "}
+            Don't have an account?{" "}
             <Link
               href="/signup"
-              className="font-medium text-blue-400 transition hover:text-blue-300"
+              className="font-medium text-blue-400 hover:text-blue-300"
             >
               Sign up
             </Link>
@@ -176,4 +198,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignInPage;
