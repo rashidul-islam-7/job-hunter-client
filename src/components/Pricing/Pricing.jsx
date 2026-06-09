@@ -25,8 +25,8 @@ const plans = [
   },
   {
     name: "Growth",
-    monthlyPrice: 17,
-    yearlyPrice: 12, // Calculated with the 25% discount shown in the design
+    monthlyPrice: 10,
+    yearlyPrice: 75, // Calculated with the 25% discount shown in the design
     icon: <HiOutlineTrendingUp className="text-purple-400 text-xl" />,
     features: [
       "Daily AI match brief (top 5)",
@@ -38,8 +38,8 @@ const plans = [
   },
   {
     name: "Premium",
-    monthlyPrice: 99,
-    yearlyPrice: 74,
+    monthlyPrice: 25,
+    yearlyPrice: 155,
     icon: <HiOutlineLightningBolt className="text-fuchsia-400 text-xl" />,
     features: [
       "Everything in Pro",
@@ -55,6 +55,19 @@ export default function PricingCards() {
 
   return (
     <div className="bg-[#050505] text-zinc-100 m-auto px-5 sm:px-8 md:px-16 py-16 ">
+      <div className="mb-10">
+        <div className="flex justify-center items-center gap-3">
+          <span className="h-2 w-2 bg-blue-500"></span>
+          <span className="uppercase text-md  text-gray-300">
+            Pricing
+          </span>
+          <span className="h-2 w-2 bg-blue-500"></span>
+        </div>
+        <h2 className="text-3xl font-bold text-center text-white max-w-sm mx-auto mt-4">
+          Pay for the leverage, not the listings
+        </h2>
+      </div>
+
       <div className="">
         <PricingToggleBtn btnActive={btnActive} setBtnActive={setBtnActive} />
       </div>
@@ -90,10 +103,9 @@ export default function PricingCards() {
                         : `$${plan.yearlyPrice}`}
                     </span>
                     <span className="text-zinc-500 text-sm ml-1">
-                        {btnActive === "monthly" ? "/monthly" : "/yearly"}
+                      {btnActive === "monthly" ? "/monthly" : "/yearly"}
                     </span>
                   </div>
-                 
                 </div>
               </div>
 

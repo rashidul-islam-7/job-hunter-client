@@ -3,6 +3,7 @@ import Hero from "@/components/Hero/Hero";
 import Jobs from "@/components/Jobs/Jobs";
 import PricingSection from "@/components/Pricing/Pricing";
 import StatsSection from "@/components/Stats";
+import CTAHeroSection from "@/components/NextRole/NextRole";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
     <Jobs />
     <Features />
     <PricingSection />
+    <CTAHeroSection />
     </div>
   );
 }
