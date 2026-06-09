@@ -19,13 +19,57 @@ import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  
+
   const [isLoading, setIsLoading] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+
+    setError("");
+    setSuccess("");
+    setIsLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const user = Object.fromEntries(formData.entries());
+    console.log(user);
+
+    // client side validation
+    if (!user.email?.trim()) {
+      setIsLoading(false);
+      return setError("Email is required!");
+    }
+
+    if (user.password.length < 8) {
+      setIsLoading(false);
+      return setError("Password must be at least 8 characters!");
+    }
+
+    try {
+      setIsLoading(true);
+
+      const { data, error } = await signIn.email({
+        email: user.email,
+        password: user.password,
+        callbackURL: "/",
+      });
+
+      if (error) {
+        setError(error.message);
+        return;
+      }
+
+      if (data) {
+        router.push("/");
+      }
+
+      setSuccess("Sign in successfully!");
+    } catch (err) {
+      setError(err?.message || "Something went wrong!");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -83,7 +127,9 @@ const SignUpPage = () => {
               <InputGroup.Input
                 // className="w-full max-w-[280px]"
                 type={isVisible ? "text" : "password"}
-                value={isVisible ? password : "••••••••"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="e.g Rashed$134"
               />
               <InputGroup.Suffix className="pr-0">
                 <Button
