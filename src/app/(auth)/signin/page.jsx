@@ -68,7 +68,6 @@ const SignInPage = () => {
 
       setSuccess("Sign in successful!");
       router.push("/");
-
     } catch (err) {
       console.error(err);
 
@@ -123,7 +122,7 @@ const SignInPage = () => {
           <TextField isRequired name="email" type="email">
             <Label>Email</Label>
 
-            <Input placeholder="john@example.com" />
+            <Input className="w-full" placeholder="john@example.com" />
 
             <FieldError />
           </TextField>

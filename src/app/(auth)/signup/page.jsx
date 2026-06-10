@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useReducer, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Description,
@@ -10,6 +10,8 @@ import {
   Label,
   TextField,
   InputGroup,
+  Radio,
+  RadioGroup,
 } from "@heroui/react";
 import GoogleSignUpButton from "@/components/GoogleSignUpBtn";
 import Link from "next/link";
@@ -59,7 +61,8 @@ const SignUpPage = () => {
         name: user.name,
         email: user.email,
         password: user.password,
-        callbackURL: "/signin",
+        role: user.role,
+        callbackURL: "/",
       });
 
       if (error) {
@@ -68,7 +71,7 @@ const SignUpPage = () => {
       }
 
       if (data) {
-        router.push("/signin");
+        router.push("/");
       }
 
       setSuccess("Account created successfully!");
@@ -122,12 +125,16 @@ const SignUpPage = () => {
         <Form onSubmit={onSubmit} className="flex flex-col gap-5">
           <TextField isRequired name="name" type="text">
             <Label>Username</Label>
-            <Input aria-label="Name" placeholder="John Doe" />
+            <Input
+              className="w-full"
+              aria-label="Name"
+              placeholder="John Doe"
+            />
           </TextField>
 
           <TextField isRequired name="email" type="email">
             <Label>Email</Label>
-            <Input placeholder="john@example.com" />
+            <Input className="w-full" placeholder="john@example.com" />
             <FieldError />
           </TextField>
 
@@ -177,6 +184,26 @@ const SignUpPage = () => {
             <Description>At least 8 characters</Description>
             <FieldError />
           </TextField>
+
+          <RadioGroup defaultValue="seeker" name="role">
+            <Label>Role selection</Label>
+            <Radio value="seeker">
+              <Radio.Control>
+                <Radio.Indicator />
+              </Radio.Control>
+              <Radio.Content>
+                <Label>Job Seeker</Label>
+              </Radio.Content>
+            </Radio>
+            <Radio value="recruiter">
+              <Radio.Control>
+                <Radio.Indicator />
+              </Radio.Control>
+              <Radio.Content>
+                <Label>Recruiter</Label>
+              </Radio.Content>
+            </Radio>
+          </RadioGroup>
 
           <button
             type="submit"
